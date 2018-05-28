@@ -21,7 +21,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private ItemClickListener mClickListener;
     private Context mContext;
     private List<Movie> Movies;
-
     public MovieAdapter(@NonNull Context context, int itemsNum, List<Movie> movies, ItemClickListener itemClickListener) {
         this.numberOfItems = itemsNum;
         this.mClickListener = itemClickListener;
@@ -40,14 +39,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String imagePath = Movies.get(position).getPosterPath();
-        String imageP = "http://image.tmdb.org/t/p/w500/" + imagePath;
+        String imagepath = Movies.get(position).getPosterPath();
+        String imageP = "http://image.tmdb.org/t/p/w500/" + imagepath;
         Picasso.with(mContext).load(imageP).into(holder.image);
+
     }
 
 
     @Override
     public int getItemCount() {
+
         return Movies.size();
     }
 
@@ -71,6 +72,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public interface ItemClickListener {
-        void onItemClick(int position);
+
+       void onItemClick(int position);
+
     }
 }

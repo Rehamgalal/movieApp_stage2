@@ -19,6 +19,7 @@ public class Feed {
     private int totalResults;
     @SerializedName("total_pages")
     private int totalPages;
+@SerializedName("results")
 
     public int getPage() {
         return page;
@@ -31,6 +32,7 @@ public class Feed {
     public List<Movie> getResults() {
         return results;
     }
+
 
     public void setResults(List<Movie> results) {
         this.results = results;

@@ -1,6 +1,7 @@
 package com.example.reham.moviesapp;
 
 import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,8 +21,15 @@ import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.reham.moviesapp.Reviews.apiKey;
 
 public class MovieInformation extends AppCompatActivity implements Values {
     @BindView(R.id.Poster)
@@ -45,38 +53,42 @@ public class MovieInformation extends AppCompatActivity implements Values {
     String Name;
     int ID;
     String imagePath;
+    String Path;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_information);
         ButterKnife.bind(this);
-        Reviews reviews = new Reviews();
-        FragmentManager Fm= getFragmentManager();
-        Fm.beginTransaction().add(R.id.frame,reviews).commit();
+
         Bundle data = getIntent().getExtras();
 
         if (data != null) {
-            Name = data.getString(movieName);
-            String Path = data.getString(moviePath);
-            String Overview0 = data.getString(Overview);
+           Name = data.getString(movieName);
+            Path = data.getString(moviePath);
+           String Overview0 = data.getString(Overview);
             double Rate0 = data.getDouble(Rate);
             ID=data.getInt(Fid);
+            Log.i("insert succed",""+ID);
+
             float rate0 =(float) Rate0 / 2;
-            String Date0 = data.getString(Date);
+            String Date0 = data.getString(Date1);
             imagePath = imagesUrl + imageWidth + Path;
             Picasso.with(this).load(imagePath).into(I);
-            videoView.setVideoURI(Uri.parse(imagePath));
+         /*   videoView.setVideoURI(Uri.parse(imagePath));
             MediaController vidControl = new MediaController(this);
             vidControl.setAnchorView(videoView);
-            videoView.setMediaController(vidControl);
+            videoView.setMediaController(vidControl);*/
+            final Reviews reviews = new Reviews();
+            FragmentManager Fm= getFragmentManager();
+            Bundle args = new Bundle();
+            args.putInt("key", ID);
+            reviews.setArguments(args);
+            Fm.beginTransaction().replace(R.id.frame,reviews).commit();
             rate.setRating(rate0);
             N.setText(Name);
-            rate.setRating(rate0);
             overview.setText(Overview0);
-            date.setText(Date0);
-        }
-
-
+            date.setText(Date0);}
     }
 
     public void onBoxStar(View view) {
@@ -88,7 +100,7 @@ public class MovieInformation extends AppCompatActivity implements Values {
             cv.put(FavoriteContract.FavoriteEntry.favID,ID);
             cv.put(FavoriteContract.FavoriteEntry.FavPoster,imagePath);
             getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI,cv);
-            Log.i("insert succed","inserted");
+            Log.i("insert succed",cv.getAsString(FavoriteContract.FavoriteEntry.favID));
 
         }else {
 

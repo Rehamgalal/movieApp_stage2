@@ -3,6 +3,7 @@ package com.example.reham.moviesapp;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,11 +42,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     RadioButton favMovies;
     @BindView(R.id.chooose)
     RadioGroup Group;
-    MovieAdapter movieAdapter1;
-    String topmovies = "?api_key=61786c8037a97ce6a05735a7fd509cc4";
-    String mostpopularmovies = "popular/?api_key=61786c8037a97ce6a05735a7fd509cc4";
+    String apiKey = "61786c8037a97ce6a05735a7fd509cc4";
+    String topmovies= "topmovies";
+    String mostpopularmovies = "popular";
+    String fav="favmovies";
     Boolean check = true;
     Cursor c ;
+    List<Movie> movies;
     final Context mContext = this;
     final MovieAdapter.ItemClickListener itemClickListener=this;
     @Override
@@ -54,58 +58,60 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
         ButterKnife.bind(this);
         RC.setLayoutManager(new GridLayoutManager(mContext,snapCount));
         RC.setHasFixedSize(true);
-        getdata(topmovies);
-  /*      Group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+        getdata(mostpopularmovies,apiKey);
+       Group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (mostPopular.getId() == checkedId) {
-                    getdata(mostpopularmovies);
+                    getdata(mostpopularmovies,apiKey);
                     check = true;
                 } else if (topRated.getId() == checkedId) {
-                   getdata(topmovies);
+                   getdata(topmovies,apiKey);
                     check = false;
 
                 }else if (favMovies.getId()==checkedId){
-                    FavMovies f= new FavMovies();
-                    ArrayList<Movie> favMovies=f.FavMovies(mContext);
 
-                    RC.setAdapter(movieAdapter);
+                   FavMovies favMovies= new FavMovies();
+                  List<Movie> favorite= favMovies.getFavList(getBaseContext());
+                    RC.setAdapter(new MovieAdapter(mContext,numOfItems,favorite, itemClickListener));
                 }
             }
-        });*/
+        });
     }
 
     @Override
     public void onItemClick(final int position) {
-    /*    if (check) {
+
             Intent i = new Intent(MainActivity.this, MovieInformation.class);
-            i.putExtra(moviePath, movieAdapter.PAth[position]);
-            i.putExtra(movieName, movieAdapter.Name[position]);
-            i.putExtra(Overview, movieAdapter.Overview[position]);
-            i.putExtra(Rate, movieAdapter.Rate[position]);
-            i.putExtra(Date, movieAdapter.date[position]);
+        String imagepath = movies.get(position).getPosterPath();
+        String overview = movies.get(position).getOverview();
+        String Date= movies.get(position).getReleaseDate();
+        String Name = movies.get(position).getOriginalTitle();
+        double Vote=movies.get(position).getVoteAverage();
+        int ID  =movies.get(position).getId();
+        i.putExtra(moviePath,imagepath);
+        i.putExtra(movieName,Name);
+        i.putExtra(Overview,overview);
+        i.putExtra(Date1,Date);
+        i.putExtra(Rate,Vote);
+        i.putExtra(Fid,ID);
             startActivity(i);
-        } else {
-            Intent i = new Intent(MainActivity.this, MovieInformation.class);
-            i.putExtra(moviePath, movieAdapter1.PAth[position]);
-            i.putExtra(movieName, movieAdapter1.Name[position]);
-            i.putExtra(Overview, movieAdapter1.Overview[position]);
-            i.putExtra(Rate, movieAdapter1.Rate[position]);
-            i.putExtra(Date, movieAdapter1.date[position]);
-            startActivity(i);
-        }*/
+
     }
-    public void getdata(String url){
+    public void getdata(String criteria,String apikey){
         Retrofit2.ApiInterface apiService =
                 ApiClient.getClient().create(Retrofit2.ApiInterface.class);
-
-        Call<Feed> call = apiService.getTopRatedMovies(url);
+        Call<Feed> call = null;
+        if (criteria.equals(topmovies)) {
+        call = apiService.getTopRatedMovies(apikey);
+        }else if (criteria.equals(mostpopularmovies)){
+        call = apiService.getPopularMovies(apikey);
+        }
+        
         call.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(Call<Feed> call, Response<Feed> response) {
-                int statusCode = response.code();
-                List<Movie> movies = response.body().getResults();
+                movies = response.body().getResults();
                 RC.setAdapter(new MovieAdapter(mContext,numOfItems,movies, itemClickListener));
             }
 

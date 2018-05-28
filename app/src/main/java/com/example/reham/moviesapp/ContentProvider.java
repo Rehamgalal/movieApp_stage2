@@ -34,9 +34,15 @@ public class ContentProvider extends android.content.ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        SQLiteDatabase db=mFavDBHelper.getWritableDatabase();
+        SQLiteDatabase db=mFavDBHelper.getReadableDatabase();
         int match =sUriMatcher.match(uri);
-        Cursor retCur=db.query(FavoriteContract.FavoriteEntry.tableName,projection,selection,selectionArgs,null,null,sortOrder);
+        Cursor retCur;
+        switch (match){
+            case Movies:
+       retCur =db.query(FavoriteContract.FavoriteEntry.tableName,projection,selection,selectionArgs,null,null,sortOrder);
+        break;
+        default:
+            throw new UnsupportedOperationException("unknown uri"+uri);}
         retCur.setNotificationUri(getContext().getContentResolver(),uri);
         return retCur;
     }
