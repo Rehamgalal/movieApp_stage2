@@ -47,12 +47,10 @@ public class Reviews extends ListFragment {
             public void onResponse(Call<MovieReview> call, Response<MovieReview> response) {
 
                 List<reviewdetails> review=response.body().getResults();
-                Log.i("done","done");
                 final String [] Review= new String[review.size()];
 for(int i = 0 ; i<review.size();i++){
 
-                  Review[i] = review.get(i).getuserName()+": "+review.get(i).getReview();
-                Log.i("review",review.size()+"");}
+                  Review[i] = review.get(i).getuserName()+": "+review.get(i).getReview();}
                 ArrayAdapter<String> itemsAdapter =
                         new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Review);
                 setListAdapter(itemsAdapter);

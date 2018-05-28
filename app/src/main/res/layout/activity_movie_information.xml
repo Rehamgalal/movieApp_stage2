@@ -82,20 +82,20 @@
                 app:layout_constraintStart_toStartOf="@+id/movierate"
                 app:layout_constraintTop_toBottomOf="@+id/movierate" />
 
-            <TextView
-                android:id="@+id/moviedate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:background="@color/detailscolor"
-                android:padding="@dimen/padding"
-                android:rotation="-2"
-                android:textColor="@color/textcolor"
-                android:textSize="@dimen/smalltextsize"
-                app:layout_constraintStart_toStartOf="@+id/datelabel"
-                app:layout_constraintTop_toBottomOf="@+id/datelabel" />
+    <TextView
+        android:id="@+id/moviedate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@color/detailscolor"
+        android:padding="@dimen/padding"
+        android:rotation="-2"
+        android:textColor="@color/textcolor"
+        android:textSize="@dimen/smalltextsize"
+        app:layout_constraintStart_toStartOf="@+id/datelabel"
+        app:layout_constraintTop_toBottomOf="@+id/datelabel" />
 
-            <TextView
+    <TextView
                 android:id="@+id/overviewlabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                 android:onClick="onBoxStar"
                 app:layout_constraintStart_toEndOf="@+id/moviename" />
 
-            <VideoView
+            <Button
                 android:id="@+id/myVideo"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

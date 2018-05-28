@@ -18,4 +18,6 @@ public interface Retrofit2 {
 
         @GET("movie/{id}/reviews")
         Call<MovieReview> getMovieReviews(@Path("id") int id, @Query("api_key") String apiKey);
+        @GET("movie/{id}/videos")
+        Call<Video> getMovieVideo(@Path("id")int id ,@Query("api_key") String apiKey);
     }}
