@@ -29,7 +29,7 @@ import retrofit2.Response;
 
 public class Reviews extends ListFragment {
 
-   static String apiKey = "61786c8037a97ce6a05735a7fd509cc4";
+   static String apiKey = "";
 
    public Reviews(){}
 

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     RadioButton favMovies;
     @BindView(R.id.chooose)
     RadioGroup Group;
-    String apiKey = "61786c8037a97ce6a05735a7fd509cc4";
+    String apiKey = "";
     String topmovies= "topmovies";
     String mostpopularmovies = "popular";
     String fav="favmovies";

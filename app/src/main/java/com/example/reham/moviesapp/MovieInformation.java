@@ -1,5 +1,6 @@
 package com.example.reham.moviesapp;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.ContentValues;
@@ -133,19 +134,25 @@ public class MovieInformation extends AppCompatActivity implements Values {
         {
             PreferenceManager.getDefaultSharedPreferences(this).edit()
                     .putBoolean("checkBox1", check).apply();
+            @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Void> insertSquawkTask = new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
             ContentValues cv=new ContentValues();
             cv.put(FavoriteContract.FavoriteEntry.FavName,Name);
             cv.put(FavoriteContract.FavoriteEntry.favID,ID);
             cv.put(FavoriteContract.FavoriteEntry.FavPoster,imagePath);
             getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI,cv);
             Log.i("insert succed",cv.getAsString(FavoriteContract.FavoriteEntry.favID));
+                return  null;}
+            };
+            insertSquawkTask.execute();
 
         }else {
- 
-
             String id = Integer.toString(ID);
             Uri uri= FavoriteContract.FavoriteEntry.CONTENT_URI;
-            uri = uri.buildUpon().appendPath(id).build();           getContentResolver().delete(FavoriteContract.FavoriteEntry.CONTENT_URI, null,null);
+            uri = uri.buildUpon().appendPath(id).build();
+            getContentResolver().delete(uri,null,null);
             PreferenceManager.getDefaultSharedPreferences(this).edit()
                     .putBoolean("checkBox1", false).apply();
 
