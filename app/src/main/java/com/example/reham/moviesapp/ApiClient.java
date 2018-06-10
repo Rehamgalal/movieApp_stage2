@@ -24,7 +24,7 @@ public class ApiClient {
 // add logging as last interceptor
         httpClient.addInterceptor(logging);  // <-- this is the important line!
 
-        if (retrofit==null) {
+        if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())

@@ -11,6 +11,7 @@ public class VideoDEtails {
     String Key;
     @SerializedName("name")
     String Name;
+
     public String getKey() {
         return Key;
     }

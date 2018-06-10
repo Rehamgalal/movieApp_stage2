@@ -11,10 +11,12 @@ public class reviewdetails {
     String userName;
     @SerializedName("content")
     String review;
-    public reviewdetails(String userName,String review){
-        this.userName=userName;
-        this.review=review;
+
+    public reviewdetails(String userName, String review) {
+        this.userName = userName;
+        this.review = review;
     }
+
     public String getuserName() {
         return userName;
     }
@@ -22,6 +24,7 @@ public class reviewdetails {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     public String getReview() {
         return review;
     }

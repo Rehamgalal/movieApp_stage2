@@ -19,7 +19,8 @@ public class Feed {
     private int totalResults;
     @SerializedName("total_pages")
     private int totalPages;
-@SerializedName("results")
+
+    @SerializedName("results")
 
     public int getPage() {
         return page;

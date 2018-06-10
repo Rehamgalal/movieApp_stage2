@@ -12,13 +12,14 @@ import java.util.List;
 
 public class MovieReview {
     @SerializedName("results")
-    public List<reviewdetails>results;
-@SerializedName("id")
-public String id;
-@SerializedName("total_pages")
-int totalpages;
-@SerializedName("total_results")
-int totalresults;
+    public List<reviewdetails> results;
+    @SerializedName("id")
+    public String id;
+    @SerializedName("total_pages")
+    int totalpages;
+    @SerializedName("total_results")
+    int totalresults;
+
     public List<reviewdetails> getResults() {
         return results;
     }

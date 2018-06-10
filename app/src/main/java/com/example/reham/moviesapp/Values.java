@@ -8,15 +8,9 @@ public interface Values {
     String movieName = "moviename";
     String Overview = "overview";
     String Rate = "rate";
-    String Date = "date";
-    String imagePath = "poster_path";
-    String movieName0 = "original_title";
-    String overview = "overview";
-    String vote = "vote_average";
     String Date1 = "release_date";
-    String Error = "error";
     String imagesUrl = "http://image.tmdb.org/t/p/";
     String imageWidth = "w500/";
-    String results = "results";
-    String Fid="favID";
+    String Fid = "favID";
+    String apiKey = "YOUR_API";
 }

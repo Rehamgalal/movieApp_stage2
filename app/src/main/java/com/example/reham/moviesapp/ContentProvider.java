@@ -17,35 +17,38 @@ import android.text.TextUtils;
  */
 
 public class ContentProvider extends android.content.ContentProvider {
-    private FavDBHelper mFavDBHelper ;
-    public static final int Movies=100;
-    public static final int Movie_ID=101;
+    private FavDBHelper mFavDBHelper;
+    public static final int Movies = 100;
+    public static final int Movie_ID = 101;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    public static UriMatcher buildUriMatcher(){
-        UriMatcher uriMatcher =new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(FavoriteContract.Authority,FavoriteContract.path,Movies);
+
+    public static UriMatcher buildUriMatcher() {
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(FavoriteContract.Authority, FavoriteContract.path, Movies);
         return uriMatcher;
     }
+
     @Override
     public boolean onCreate() {
-        Context context =getContext();
-        mFavDBHelper= new FavDBHelper(context);
+        Context context = getContext();
+        mFavDBHelper = new FavDBHelper(context);
         return true;
     }
 
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        SQLiteDatabase db=mFavDBHelper.getReadableDatabase();
-        int match =sUriMatcher.match(uri);
+        SQLiteDatabase db = mFavDBHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
         Cursor retCur;
-        switch (match){
+        switch (match) {
             case Movies:
-       retCur =db.query(FavoriteContract.FavoriteEntry.tableName,projection,selection,selectionArgs,null,null,sortOrder);
-        break;
-        default:
-            throw new UnsupportedOperationException("unknown uri"+uri);}
-        retCur.setNotificationUri(getContext().getContentResolver(),uri);
+                retCur = db.query(FavoriteContract.FavoriteEntry.tableName, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("unknown uri" + uri);
+        }
+        retCur.setNotificationUri(getContext().getContentResolver(), uri);
         return retCur;
     }
 
@@ -58,31 +61,31 @@ public class ContentProvider extends android.content.ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        final SQLiteDatabase db=mFavDBHelper.getWritableDatabase();
-        int match =sUriMatcher.match(uri);
+        final SQLiteDatabase db = mFavDBHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
         Uri returnUri;
-        switch (match){
+        switch (match) {
             case Movies:
-        long id =db.insert(FavoriteContract.FavoriteEntry.tableName,null,values);
+                long id = db.insert(FavoriteContract.FavoriteEntry.tableName, null, values);
 
-        if (id>0){
-           returnUri = ContentUris.withAppendedId(FavoriteContract.FavoriteEntry.CONTENT_URI,id);
-        }else {
-            throw new android.database.SQLException("Failed to insert row into "+uri);
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(FavoriteContract.FavoriteEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown Uri" + uri);
         }
-        break;
-        default:
-        throw new UnsupportedOperationException("Unknown Uri"+uri);
-        }
-        getContext().getContentResolver().notifyChange(uri,null);
+        getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        final SQLiteDatabase db=mFavDBHelper.getWritableDatabase();
+        final SQLiteDatabase db = mFavDBHelper.getWritableDatabase();
         int count;
-        int match =sUriMatcher.match(uri);
+        int match = sUriMatcher.match(uri);
         switch (match) {
             case Movies:
                 count = db.delete(FavoriteContract.FavoriteEntry.tableName, selection, selectionArgs);
@@ -93,10 +96,11 @@ public class ContentProvider extends android.content.ContentProvider {
                 count = db.delete(FavoriteContract.FavoriteEntry.tableName, FavoriteContract.FavoriteEntry.FavName + "="
                         + segment
                         + (!TextUtils.isEmpty(selection) ? " AND ("
-                        + selection+ ')' : ""), selectionArgs);
+                        + selection + ')' : ""), selectionArgs);
                 break;
 
-            default: throw new IllegalArgumentException("Unsupported URI: " + uri);
+            default:
+                throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
