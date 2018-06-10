@@ -34,5 +34,6 @@ public class FavMovies {
         }
         return FavList;
     }
+cursor.close();
 
 }
