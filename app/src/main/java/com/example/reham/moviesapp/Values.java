@@ -12,5 +12,5 @@ public interface Values {
     String imagesUrl = "http://image.tmdb.org/t/p/";
     String imageWidth = "w500/";
     String Fid = "favID";
-    String apiKey = "YOUR_API";
+    String apiKey = "YOUR_API_KEY";
 }
