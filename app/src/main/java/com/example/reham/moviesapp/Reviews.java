@@ -19,8 +19,7 @@ import static com.example.reham.moviesapp.Values.apiKey;
  */
 
 public class Reviews extends ListFragment {
-
-
+    ArrayAdapter<String> itemsAdapter;
     public Reviews() {
     }
 
@@ -29,6 +28,7 @@ public class Reviews extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         int ID = getArguments().getInt("key");
+
         final Retrofit2.ApiInterface apiService =
                 ApiClient.getClient().create(Retrofit2.ApiInterface.class);
         Call<MovieReview> call = apiService.getMovieReviews(ID, apiKey);
@@ -37,18 +37,16 @@ public class Reviews extends ListFragment {
             public void onResponse(Call<MovieReview> call, Response<MovieReview> response) {
 
                 List<reviewdetails> review = response.body().getResults();
-                final String[] Review = new String[review.size()];
+
+                String []Review = new String[review.size()];
                 for (int i = 0; i < review.size(); i++) {
 
                     Review[i] = review.get(i).getuserName() + " : " + review.get(i).getReview();
                 }
-
-                ArrayAdapter<String> itemsAdapter =
-                        new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Review);
+                itemsAdapter =
+                        new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Review);
                 setListAdapter(itemsAdapter);
             }
-
-
             @Override
             public void onFailure(Call<MovieReview> call, Throwable t) {
                 t.getMessage();
@@ -59,4 +57,6 @@ public class Reviews extends ListFragment {
 
 
     }
+
+
 }

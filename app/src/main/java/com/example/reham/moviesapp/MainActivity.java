@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         RC.setLayoutManager(new GridLayoutManager(mContext, snapCount));
         RC.setHasFixedSize(true);
         getdata(mostpopularmovies, apiKey);
@@ -93,8 +95,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
             Intent i = new Intent(MainActivity.this, MovieInformation.class);
             String imagepath = favorite.get(position).getPosterPath();
             String Name = favorite.get(position).getOriginalTitle();
+            String overView= favorite.get(position).getOverview();
+            String Date= favorite.get(position).getReleaseDate();
+            double rate= favorite.get(position).getVoteAverage();
+            int ID =favorite.get(position).getId();
             i.putExtra(moviePath, imagepath);
             i.putExtra(movieName, Name);
+            i.putExtra(Overview,overView);
+            i.putExtra(Rate,rate);
+            i.putExtra(Fid,ID);
+            i.putExtra(Date1,Date);
             i.putExtra("checkBox",isChecked);
             startActivity(i);
         }

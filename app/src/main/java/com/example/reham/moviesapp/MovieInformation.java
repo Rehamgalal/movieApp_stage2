@@ -58,12 +58,15 @@ public class MovieInformation extends AppCompatActivity implements Values, Compo
     int ID;
     String imagePath;
     String Path;
-
+    String Date0;
+    float rate0;
+    String overView0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_information);
         ButterKnife.bind(this);
+
         final Context mContext = this;
         Bundle data = getIntent().getExtras();
         if (data != null) {
@@ -75,12 +78,12 @@ public class MovieInformation extends AppCompatActivity implements Values, Compo
             imagePath = imagesUrl + imageWidth + Path;
             Picasso.with(this).load(imagePath).into(I);
             N.setText(Name);
-            if (data.getString(Overview) != null) {
-                String Overview0 = data.getString(Overview);
+
+                overView0 = data.getString(Overview);
                 double Rate0 = data.getDouble(Rate);
 
-                float rate0 = (float) Rate0 / 2;
-                String Date0 = data.getString(Date1);
+                rate0 = (float) Rate0 / 2;
+                Date0 = data.getString(Date1);
                 checkBox.setOnCheckedChangeListener(this);
                 videoButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -126,19 +129,12 @@ public class MovieInformation extends AppCompatActivity implements Values, Compo
                 reviews.setArguments(args);
                 Fm.beginTransaction().replace(R.id.frame, reviews).commit();
                 rate.setRating(rate0);
-                overview.setText(Overview0);
+                overview.setText(overView0);
                 date.setText(Date0);
-            } else {
-                videoButton.setVisibility(View.INVISIBLE);
-                rate.setVisibility(View.INVISIBLE);
-                overview.setVisibility(View.INVISIBLE);
-                date.setVisibility(View.INVISIBLE);
-                rLabel.setVisibility(View.INVISIBLE);
-                dLabel.setVisibility(View.INVISIBLE);
-                oLabel.setVisibility(View.INVISIBLE);
+
             }
         }
-    }
+
 
 
     @Override
@@ -153,6 +149,9 @@ public class MovieInformation extends AppCompatActivity implements Values, Compo
                     cv.put(FavoriteContract.FavoriteEntry.FavName, Name);
                     cv.put(FavoriteContract.FavoriteEntry.favID, ID);
                     cv.put(FavoriteContract.FavoriteEntry.FavPoster, Path);
+                    cv.put(FavoriteContract.FavoriteEntry.ReleaseDate,Date0);
+                    cv.put(FavoriteContract.FavoriteEntry.VoteAverage,rate0);
+                    cv.put(FavoriteContract.FavoriteEntry.OverView,overView0);
                     getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, cv);
                     return null;
                 }
@@ -165,5 +164,7 @@ public class MovieInformation extends AppCompatActivity implements Values, Compo
 
         }
     }
+
+
 }
 

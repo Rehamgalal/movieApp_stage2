@@ -20,6 +20,9 @@ public class FavoriteContract {
         public static String favID = "movieID";
         public static String FavName = "MovieTitle";
         public static String FavPoster="FavoriteMoviePoster";
+        public static String ReleaseDate="ReleaseDate";
+        public static String VoteAverage="VoteAverage";
+        public static String OverView="OverView";
 
     }
 }
